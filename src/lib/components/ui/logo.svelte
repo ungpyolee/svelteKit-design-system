@@ -5,7 +5,7 @@
     import LogoSymbolUrl from '$lib/assets/logo-icon.png';
     import LogoSymbolLightUrl from '$lib/assets/logo-icon-light.png';
 </script>
-<a href="/" title="Logo 로고" class="py-3 px-5 w-full">
+<a href="/" title="Logo 로고" class="w-full">
     {#if $sidebar.expanded}
         {#if $theme === 'dark'}
         <img src={LogoLightUrl} alt="Logo" width="168" height="40"/>
