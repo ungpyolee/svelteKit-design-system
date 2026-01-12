@@ -4,6 +4,10 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+       fontFamily: {
+        sans: ['Pretendard', 'sans-serif'],
+        // en: ['Edu', 'sans-serif'],
+      },
       colors: {
         background: 'var(--color-background)',
         foreground: 'var(--color-foreground)',

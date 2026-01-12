@@ -8,7 +8,7 @@
 <div
     class={cn("fixed top-0 left-0 right-0 p-3 bg-white dark:bg-gray-900" 
             ,"border-b border-gray-100 dark:border-gray-800",
-            $sidebar.expanded? "left-[300px]": "left-[84px]")}
+            $sidebar.expanded? "left-[280px]": "left-[84px]")}
 >
     <nav class="flex">
         <div class="">

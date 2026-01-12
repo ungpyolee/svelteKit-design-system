@@ -28,6 +28,8 @@
     --color-ring: #3b82f6;
 
     --radius: 0.5rem;
+
+    --color-scrollbar-thumb: #EAECEF;
   }
 
   .dark {
@@ -53,6 +55,8 @@
     --color-border: #1e293b;
     --color-input: #1e293b;
     --color-ring: #3b82f6;
+
+    --color-scrollbar-thumb: #2F3033;
   }
 
   /* 기본 스타일 */
@@ -66,5 +70,24 @@
   *:focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
+      scrollbar-width: thin; /* 스크롤바 두께 */
+      scrollbar-color: var(--color-scrollbar-thumb) var(--color-background); /* 핸들(Thumb) 및 트랙(Track) 색상 */
+    }
+
+
+  /* Chrome, Safari, Edge (WebKit 기반 브라우저) */
+  ::-webkit-scrollbar {
+    width: 8px;
+    /* height: 4px; */
   }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-scrollbar-thumb);
+    /* border-radius: 2px; */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: var(--color-background);
+  }
+
 }
