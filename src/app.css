@@ -23,18 +23,18 @@
     --color-destructive: #ef4444;
     --color-destructive-foreground: #ffffff;
 
-    --color-border: #e2e8f0;
-    --color-input: #e2e8f0;
+    --color-border: #E8ECF9;
+    --color-input: #E8ECF9;
     --color-ring: #3b82f6;
 
     --radius: 0.5rem;
 
-    --color-scrollbar-thumb: #EAECEF;
+    --color-scrollbar-thumb: #E8ECF9;
   }
 
   .dark {
     /* 다크 테마 */
-    --color-background: #0F0F11;
+    --color-background: #161630;
     --color-foreground: #f8fafc;
 
     --color-primary: #3b82f6;
@@ -52,11 +52,11 @@
     --color-destructive: #dc2626;
     --color-destructive-foreground: #ffffff;
 
-    --color-border: #1e293b;
-    --color-input: #1e293b;
+    --color-border: #2E3046;
+    --color-input: #2E3046;
     --color-ring: #3b82f6;
 
-    --color-scrollbar-thumb: #2F3033;
+    --color-scrollbar-thumb: #2E3046;
   }
 
   /* 기본 스타일 */
@@ -73,7 +73,7 @@
       scrollbar-width: thin; /* 스크롤바 두께 */
       scrollbar-color: var(--color-scrollbar-thumb) var(--color-background); /* 핸들(Thumb) 및 트랙(Track) 색상 */
     }
-
+    
 
   /* Chrome, Safari, Edge (WebKit 기반 브라우저) */
   ::-webkit-scrollbar {
