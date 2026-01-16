@@ -51,12 +51,12 @@
                         <!-- 메뉴 내용 -->
                         <ul class="grid grid-cols-1 p-2 text-sm w-[160px]">
                             <li>
-                                <a href="/setting/team" class="block py-2 px-4 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded w-full text-start">
-                                    팀 변경
+                                <a href="/setting/switch-team" class="block py-2 px-4 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded w-full text-start">
+                                    팀 전환
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="block py-2 px-4 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded w-full text-start">
+                                <a href="/" class="block py-2 px-4 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800 rounded w-full text-start">
                                     계정 정보
                                 </a>
                             </li>

@@ -68,6 +68,7 @@ export default {
           900: '#111827'
         },
         danger: {
+          DEFAULT : '#EF4A00',
            50: '#FEF2F2',
           100: '#FEE2E2',
           200: '#FECACA',
@@ -86,6 +87,7 @@ export default {
           focus: '#ef477026'
         },
         success: {
+          DEFAULT : '#22C55E',
            50: '#F0FDF4',
           100: '#DCFCE7',
           200: '#BBF7D0',
@@ -104,6 +106,7 @@ export default {
           focus: '#45b36926'
         },
         warning: {
+          DEFAULT : '#EAB308',
            50: '#FEFCE8',  
           100: '#FEF9C3',
           200: '#FEF08A',

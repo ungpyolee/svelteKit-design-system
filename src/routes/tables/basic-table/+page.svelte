@@ -8,7 +8,7 @@
         <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
             <!-- Default Table Small-->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Default Table Small</p>
                 </header>
                 <section class="p-6">
@@ -59,7 +59,7 @@
 
             <!-- Default Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Default Table</p>
                 </header>
                 <section class="p-6">
@@ -110,7 +110,7 @@
 
             <!-- Default Table Large -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Default Table Large</p>
                 </header>
                 <section class="p-6">
@@ -161,7 +161,7 @@
 
             <!-- Striped Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Striped Table</p>
                 </header>
                 <section class="p-6">
@@ -212,7 +212,7 @@
 
             <!-- Bordered Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Bordered Table</p>
                 </header>
                 <section class="p-6">
@@ -253,7 +253,7 @@
 
             <!-- Compact Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Compact Table</p>
                 </header>
                 <section class="p-6">
@@ -295,7 +295,7 @@
 
             <!-- Checkbox Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-                <header class="p-6 border-b border-gray-100 dark:border-gray-800">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800">
                     <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Checkbox Table</p>
                 </header>
                 <section class="p-6">
@@ -405,6 +405,69 @@
                             </tr>
                         </tbody>
                     </table>
+                </section>
+            </div>
+
+            <!-- Selection List Table -->
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+                <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                    <p class="text-lg font-medium text-gray-800 dark:text-gray-100">Selection List Table</p>
+                    <a href="#" class="text-sm text-primary hover:text-primary-700">
+                        Manage Items
+                    </a>
+                </header>
+                <section class="p-2">
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-800">
+                        <li>
+                            <button class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 font-semibold">
+                                        A
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Item Alpha</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Description text</p>
+                                    </div>
+                                </div>
+                                <span class="flex items-center gap-1.5 px-2 py-1 text-xs font-medium bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400 rounded-full">
+                                    <Icon name="Check" size="xs" />
+                                    Current
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-warning-100 dark:bg-warning-900/30 flex items-center justify-center text-warning-600 dark:text-warning-400 font-semibold">
+                                        B
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Item Beta</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Description text</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-400">
+                                    Select
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-danger-100 dark:bg-danger-900/30 flex items-center justify-center text-danger-600 dark:text-danger-400 font-semibold">
+                                        C
+                                    </div>
+                                    <div class="text-left">
+                                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Item Gamma</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Description text</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-400">
+                                    Select
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
                 </section>
             </div>
         </div>

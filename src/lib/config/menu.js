@@ -31,6 +31,11 @@ export const menuConfig = [
                     name: "card",
                     innerText: "Card",
                     url: "/components/card",
+                },
+                {
+                    name: "modal",
+                    innerText: "Modal",
+                    url: "/components/modal",
                 }
             ]
         },
@@ -71,9 +76,24 @@ export const menuConfig = [
             lucideIcon: "ChartNetwork",
             submenuList: [
                 {
-                    name: "page-1",
-                    innerText: "Page-1",
-                    url: "/rms/page-1",
+                    name: "user-dashboard",
+                    innerText: "User Dashboard",
+                    url: "/rms/user-dashboard",
+                },
+                {
+                    name: "digital-assets",
+                    innerText: "Digital Assets",
+                    url: "/rms/digital-assets",
+                },
+                {
+                    name: "digital-asset-requests",
+                    innerText: "Digital Asset Requests",
+                    url: "/rms/digital-asset-requests",
+                },
+                {
+                    name: "digital-asset-payments",
+                    innerText: "Digital Asset payments",
+                    url: "/rms/digital-asset-payments",
                 },
             ]
         },
@@ -97,9 +117,14 @@ export const menuConfig = [
             lucideIcon: "Cog",
             submenuList: [
                 {
-                    name: "team",
-                    innerText: "Team",
-                    url: "/setting/team",
+                    name: "switch-team",
+                    innerText: "Switch Team",
+                    url: "/setting/switch-team",
+                },
+                {
+                    name: "manage-teams",
+                    innerText: "Manage Teams",
+                    url: "/setting/manage-teams",
                 },
             ]
         },
