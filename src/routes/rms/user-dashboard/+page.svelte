@@ -139,7 +139,7 @@
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl h-fit">
                 <section class="p-6 flex">
                     <div class="w-full flex flex-col gap-2">
-                        <p class="text-md text-gray-600 dark:text-gray-200">기술자료 요청 승인 대기</p>
+                        <p class="text-md text-gray-600 dark:text-gray-200">기술자료 요청 목록</p>
                         <p class="text-3xl">{digitalAssetRequests.filter(a => a.status === 'pending').length}</p>
                     </div>    
                     <div class="min-w-14 min-h-14 flex items-center">
@@ -149,7 +149,7 @@
                     </div>
                 </section>
                 <footer class="px-6 pb-6">
-                    <a href="/" class="hover:underline text-primary">전체보기</a>
+                    <a href="/rms/digital-asset-requests" class="hover:underline text-primary">전체보기</a>
                 </footer>
             </div>
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl h-fit">
@@ -190,7 +190,7 @@
             <!-- 최근 기술자료 승인 기록 Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
                 <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                    <p class="text-lg font-medium text-gray-800 dark:text-gray-100">최근 기술자료 승인 기록</p>
+                    <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 요청 목록</p>
                     <a href="/rms/requests" class="text-sm text-primary hover:text-primary-700">
                         전체보기
                     </a>

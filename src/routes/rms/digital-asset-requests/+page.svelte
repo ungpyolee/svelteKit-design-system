@@ -6,29 +6,72 @@
         { 
             requestId: 1, 
             digitalAsset: 'IPM-2024-0892 모터 설계 도면', 
-            requestDate: '2024-01-15',
-            requester: '김철수', 
+            requestAt: '2024-01-15',
+            requester: '김철수',
             requesterEmail: 'cs.kim@clew.tech',
+            requesterTeam: 'Motorspace',
+            requestDescription: '신규 전기차 프로젝트에 적용할 IPM 모터 설계 검토를 위해 해당 도면이 필요합니다. 특히 냉각 구조 부분을 참고하고자 합니다.',
+            status: 'approved',
             approver: '박영희', 
-            status: 'approved' 
+            approverEmail: 'yh.park@clew.tech',
+            processedDate: '2024-01-16',
+            processDescription: '프로젝트 목적 확인 완료. 냉각 구조 관련 도면 제공 승인합니다. 단, 외부 유출 금지 조건 부여.',
+        },
+        { 
+            requestId: 2, 
+            digitalAsset: 'BMS-2024-0156 배터리 관리 시스템 사양서', 
+            requestAt: '2024-01-14',
+            requester: '이민수', 
+            requesterEmail: 'ms.lee@clew.tech',
+            requesterTeam: 'CLEW',
+            requestDescription: 'BMS 시스템 통합 테스트를 위해 상세 사양서가 필요합니다. 통신 프로토콜 및 안전 기준 부분을 확인하려 합니다.',
+            status: 'approved',
+            approver: '박영희', 
+            approverEmail: 'yh.park@clew.tech',
+            processedDate: '2024-01-15',
+            processDescription: '내부 프로젝트 용도로 승인합니다.',
         },
         { 
             requestId: 3, 
             digitalAsset: 'INV-2024-0234 인버터 회로도', 
-            requestDate: '2024-01-13',
+            requestAt: '2024-01-13',
             requester: '정다운', 
             requesterEmail: 'dw.jung@motorspace.io',
-            approver: '-', 
-            status: 'pending' 
+            requesterTeam: 'Motorspace',
+            requestDescription: '인버터 고장 분석을 위해 회로도 검토가 필요합니다. 전력부 및 게이트 드라이버 회로 부분을 확인하고자 합니다.',
+            status: 'pending',
+            approver: null, 
+            approverEmail: null,
+            processedDate: null,
+            processDescription: null,
         },
         { 
             requestId: 4, 
             digitalAsset: 'MCU-2024-0567 제어기 펌웨어 문서', 
-            requestDate: '2024-01-12',
+            requestAt: '2024-01-12',
             requester: '최지훈', 
             requesterEmail: 'jh.choi@geneers.com',
-            approver: '박대표', 
-            status: 'rejected' 
+            requesterTeam: 'GENEERS',
+            requestDescription: '펌웨어 커스터마이징을 위해 소스코드 및 문서가 필요합니다.',
+            status: 'rejected',
+            approver: '김대표', 
+            approverEmail: 'ceo@clew.tech',
+            processedDate: '2024-01-13',
+            processDescription: '해당 자료는 핵심 기술 자산으로 분류되어 외부 공유가 불가합니다. API 문서로 대체 제공 가능하니 별도 요청 바랍니다.',
+        },
+        { 
+            requestId: 5, 
+            digitalAsset: 'SEN-2024-0891 센서 인터페이스 규격서', 
+            requestAt: '2024-01-11',
+            requester: '한소영', 
+            requesterEmail: 'sy.han@clew.tech',
+            requesterTeam: 'CLEW',
+            requestDescription: '센서 모듈 개발을 위해 인터페이스 규격 확인이 필요합니다. CAN 통신 프로토콜 부분을 중점적으로 검토하려 합니다.',
+            status: 'pending',
+            approver: null, 
+            approverEmail: null,
+            processedDate: null,
+            processDescription: null,
         },
     ]);
 
@@ -110,7 +153,7 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.requestDate}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.requestAt}</td>
                             <td class="px-4 py-3">
                                 <div class="text-left">
                                     <p class="text-sm text-gray-800 dark:text-gray-200">{asset.requester}</p>
@@ -171,7 +214,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">요청일</p>
-                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedAsset.requestDate}</p>
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedAsset.requestAt}</p>
                 </div>
                 <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">승인자</p>
@@ -180,19 +223,35 @@
             </div>
 
             <!-- 요청인 정보 -->
-            <div class="p-4 border border-gray-100 dark:border-gray-800 rounded-lg">
-                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">요청인 정보</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium">
-                        {selectedAsset.requester.charAt(0)}
+            <div class="border border-gray-100 dark:border-gray-800 rounded-lg">
+                <div class="p-4">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">요청인 정보</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium">
+                            {selectedAsset.requester.charAt(0)}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedAsset.requester}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">{selectedAsset.requesterEmail}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedAsset.requester}</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">{selectedAsset.requesterEmail}</p>
-                    </div>
+                </div>
+                <div class="p-4">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">요청 내용</p>
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                        {selectedAsset.requestDescription}
+                    </p>
                 </div>
             </div>
         </div>
+        {#if selectedAsset?.status === 'pending'}
+            <div class="border border-gray-100 dark:border-gray-800 rounded-lg mt-4">
+                <div class="p-4">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">승인/반려내용</p>
+                    <textarea class="w-full text-sm bg-transparent resize-none border-none p-0" rows="4" placeholder="승인/반려내용을 입력해주세요."></textarea>
+                </div>
+            </div>
+        {/if}
     {/if}
 
     {#snippet footer()}
@@ -223,3 +282,4 @@
         {/if}
     {/snippet}
 </Modal>
+
