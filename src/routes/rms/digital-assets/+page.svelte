@@ -86,6 +86,12 @@
     <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
         <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 목록</p>
+            <div class="flex items-center gap-2">
+                <a href="digital-assets/new" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center">
+                    <Icon name="FilePlus" size="sm" class="inline mr-1" />
+                    새 기술자료
+                </a>
+            </div>
         </header>
         <section class="p-6">
             <table class="w-full">

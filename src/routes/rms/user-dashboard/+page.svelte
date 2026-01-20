@@ -1,36 +1,11 @@
 <script>
     import Icon from "$lib/icons/icon.svelte";
     import Modal from "$lib/components/ui/Modal.svelte";
+    import { assetRequests } from "$lib/config/assets";
 
-    let digitalAssetRequests = $state([
-        { 
-            requestId: 1, 
-            digitalAsset: 'IPM-2024-0892 모터 설계 도면', 
-            requestDate: '2024-01-15',
-            requester: '김철수', 
-            requesterEmail: 'cs.kim@clew.tech',
-            approver: '박영희', 
-            status: 'approved' 
-        },
-        { 
-            requestId: 3, 
-            digitalAsset: 'INV-2024-0234 인버터 회로도', 
-            requestDate: '2024-01-13',
-            requester: '정다운', 
-            requesterEmail: 'dw.jung@motorspace.io',
-            approver: '-', 
-            status: 'pending' 
-        },
-        { 
-            requestId: 4, 
-            digitalAsset: 'MCU-2024-0567 제어기 펌웨어 문서', 
-            requestDate: '2024-01-12',
-            requester: '최지훈', 
-            requesterEmail: 'jh.choi@geneers.com',
-            approver: '박대표', 
-            status: 'rejected' 
-        },
-    ]);
+    let digitalAssetRequests = $state(null);
+
+    digitalAssetRequests = assetRequests? assetRequests : null;
 
     // 모달 상태
     let showDetailModal = $state(false);
@@ -202,6 +177,7 @@
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">기술자료</th>
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청일</th>
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청인</th>
+                                <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">소속</th>
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인상태</th>
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인자</th>
                                 <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
@@ -228,6 +204,11 @@
                                         <div class="text-left">
                                             <p class="text-sm text-gray-800 dark:text-gray-200">{asset.requester}</p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400">{asset.requesterEmail}</p>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="text-left">
+                                            <p class="text-sm text-gray-800 dark:text-gray-200">{asset.affiliation}</p>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3">
@@ -391,7 +372,7 @@
             </button>
         {:else}
             <a 
-                href="/rms/requests/{selectedAsset?.requestId}"
+                href="/rms/digital-assets/{selectedAsset?.assetId}#requests"
                 class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors"
             >
                 상세 페이지로 이동
@@ -399,7 +380,6 @@
         {/if}
     {/snippet}
 </Modal>
-
 
 
 <!-- 기술자료 상세 모달 -->
