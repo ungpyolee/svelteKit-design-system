@@ -41,7 +41,7 @@
 
 <div 
     data-testid="layout-sidebar"
-    class={cn("fixed border-r border-gray-100 dark:border-gray-800 left-0 top-0 bottom-0 h-screen",
+    class={cn("fixed border-r border-gray-100 dark:border-gray-800 left-0 top-0 bottom-0 h-screen z-50",
     "bg-white dark:bg-gray-900",
     $sidebar.expanded? "": "group"
 )}>

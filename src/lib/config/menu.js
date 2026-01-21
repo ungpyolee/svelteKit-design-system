@@ -50,6 +50,11 @@ export const menuConfig = [
                     innerText: "Form",
                     url: "/forms/form",
                 },
+                {
+                    name: "file-upload",
+                    innerText: "File Upload",
+                    url: "/forms/file-upload"
+                }
             ]
         },
         {
@@ -94,7 +99,7 @@ export const menuConfig = [
                     name: "digital-asset-payments",
                     innerText: "Digital Asset payments",
                     url: "/rms/digital-asset-payments",
-                },
+                }
             ]
         },
         {
