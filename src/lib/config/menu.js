@@ -140,22 +140,22 @@ export const menuConfig = [
             submenuList: [
                 {
                     name: "user-dashboard",
-                    innerText: "User Dashboard",
+                    innerText: "기여자 대시보드",
                     url: "/rms/user-dashboard",
                 },
                 {
                     name: "digital-assets",
-                    innerText: "Digital Assets",
+                    innerText: "기술자료",
                     url: "/rms/digital-assets",
                 },
                 {
                     name: "digital-asset-requests",
-                    innerText: "Digital Asset Requests",
+                    innerText: "기술자료 요청",
                     url: "/rms/digital-asset-requests",
                 },
                 {
                     name: "digital-asset-payments",
-                    innerText: "Digital Asset payments",
+                    innerText: "판매내역",
                     url: "/rms/digital-asset-payments",
                 }
             ]
