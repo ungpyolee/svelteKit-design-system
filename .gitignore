@@ -1,5 +1,8 @@
 node_modules
 
+# AI Agent
+.claude
+
 # Output
 .output
 .vercel
