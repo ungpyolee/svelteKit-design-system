@@ -72,6 +72,64 @@ export const menuConfig = [
         },
         {
             type: "title",
+            innerText: "Admin",
+        },
+        {
+            type: "dropdown-menu",
+            name: "admin-users",
+            innerText: "Users",
+            lucideIcon: "Users",
+            submenuList: [
+                {
+                    name: "user-list",
+                    innerText: "사용자 목록",
+                    url: "/admin/users",
+                },
+                {
+                    name: "user-new",
+                    innerText: "사용자 추가",
+                    url: "/admin/users/new",
+                },
+            ]
+        },
+        {
+            type: "dropdown-menu",
+            name: "admin-permissions",
+            innerText: "Permissions",
+            lucideIcon: "Shield",
+            submenuList: [
+                {
+                    name: "permission-list",
+                    innerText: "권한 목록",
+                    url: "/admin/permissions",
+                },
+                {
+                    name: "permission-new",
+                    innerText: "권한 추가",
+                    url: "/admin/permissions/new",
+                },
+            ]
+        },
+        {
+            type: "dropdown-menu",
+            name: "admin-tenants",
+            innerText: "Tenants",
+            lucideIcon: "Building2",
+            submenuList: [
+                {
+                    name: "tenant-list",
+                    innerText: "테넌트 목록",
+                    url: "/admin/tenants",
+                },
+                {
+                    name: "tenant-new",
+                    innerText: "테넌트 추가",
+                    url: "/admin/tenants/new",
+                },
+            ]
+        },
+        {
+            type: "title",
             innerText: "Pages",
         },
         {
