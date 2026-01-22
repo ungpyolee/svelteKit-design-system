@@ -130,6 +130,38 @@ export const menuConfig = [
         },
         {
             type: "title",
+            innerText: "Apps",
+        },
+        {
+            type: "dropdown-menu",
+            name: "cms",
+            innerText: "CMS",
+            lucideIcon: "FileText",
+            submenuList: [
+                {
+                    name: "cms-spaces",
+                    innerText: "Spaces",
+                    url: "/apps/cms/spaces",
+                },
+                {
+                    name: "cms-contents",
+                    innerText: "Contents",
+                    url: "/apps/cms/contents",
+                },
+                {
+                    name: "cms-tags",
+                    innerText: "Tags",
+                    url: "/apps/cms/tags",
+                },
+                {
+                    name: "cms-topics",
+                    innerText: "Topics",
+                    url: "/apps/cms/topics",
+                },
+            ]
+        },
+        {
+            type: "title",
             innerText: "Pages",
         },
         {
