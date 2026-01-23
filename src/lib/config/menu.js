@@ -81,12 +81,12 @@ export const menuConfig = [
             lucideIcon: "Users",
             submenuList: [
                 {
-                    name: "user-list",
+                    name: "users",
                     innerText: "사용자 목록",
                     url: "/admin/users",
                 },
                 {
-                    name: "user-new",
+                    name: "new",
                     innerText: "사용자 추가",
                     url: "/admin/users/new",
                 },
@@ -99,12 +99,12 @@ export const menuConfig = [
             lucideIcon: "Shield",
             submenuList: [
                 {
-                    name: "permission-list",
+                    name: "permissions",
                     innerText: "권한 목록",
                     url: "/admin/permissions",
                 },
                 {
-                    name: "permission-new",
+                    name: "new",
                     innerText: "권한 추가",
                     url: "/admin/permissions/new",
                 },
@@ -117,12 +117,12 @@ export const menuConfig = [
             lucideIcon: "Building2",
             submenuList: [
                 {
-                    name: "tenant-list",
+                    name: "tenants",
                     innerText: "테넌트 목록",
                     url: "/admin/tenants",
                 },
                 {
-                    name: "tenant-new",
+                    name: "new",
                     innerText: "테넌트 추가",
                     url: "/admin/tenants/new",
                 },
@@ -139,22 +139,22 @@ export const menuConfig = [
             lucideIcon: "FileText",
             submenuList: [
                 {
-                    name: "cms-spaces",
+                    name: "spaces",
                     innerText: "Spaces",
                     url: "/apps/cms/spaces",
                 },
                 {
-                    name: "cms-contents",
+                    name: "contents",
                     innerText: "Contents",
                     url: "/apps/cms/contents",
                 },
                 {
-                    name: "cms-tags",
+                    name: "tags",
                     innerText: "Tags",
                     url: "/apps/cms/tags",
                 },
                 {
-                    name: "cms-topics",
+                    name: "topics",
                     innerText: "Topics",
                     url: "/apps/cms/topics",
                 },
@@ -175,6 +175,11 @@ export const menuConfig = [
                     name: "digital-assets",
                     innerText: "기술자료",
                     url: "/rms/digital-assets",
+                },
+                {
+                    name: "new",
+                    innerText: "새 기술자료 등록",
+                    url: "/rms/digital-assets/new",
                 },
                 {
                     name: "digital-asset-requests",
@@ -225,9 +230,9 @@ export const menuConfig = [
         },
         {
             type: "menu",
-            name: "test",
-            innerText: "Test",
-            url: "/test",
+            name: "data-registration",
+            innerText: "자료 등록",
+            url: "/data-registration",
             lucideIcon: "FileText",
         },
 ]

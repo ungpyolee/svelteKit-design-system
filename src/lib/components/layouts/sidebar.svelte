@@ -13,7 +13,7 @@
         page.url.pathname.split('/').filter(Boolean)
     );
     let firstDepth = $derived(pathSegments[0] ?? "")
-    let secondDepth = $derived(pathSegments[1] ?? "")
+    let secondDepth = $derived(pathSegments[2] ?? pathSegments[1])
 
     let openMenus = $state(new Set());
     function toggleDropdown(name) {
