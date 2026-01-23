@@ -161,10 +161,6 @@ export const menuConfig = [
             ]
         },
         {
-            type: "title",
-            innerText: "Pages",
-        },
-        {
             type: "dropdown-menu",
             name: "rms",
             innerText: "RMS",
@@ -191,6 +187,10 @@ export const menuConfig = [
                     url: "/rms/digital-asset-payments",
                 }
             ]
+        },
+        {
+            type: "title",
+            innerText: "Pages",
         },
         {
             type: "dropdown-menu",

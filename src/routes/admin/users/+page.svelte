@@ -5,32 +5,13 @@
      * [페이지 설명]
      * - 전체 사용자 목록을 테이블 형태로 보여주는 페이지
      * - 행 클릭 시 빠른 상세 모달 표시
-     * - 우측 상단에 "사용자 추가" 버튼
-     *
-     * [API 연동 시 참고]
-     * - users 배열: API에서 받아온 사용자 목록으로 교체
-     * - pagination: API 응답의 pagination 객체 사용
+     * - 우측 상단에 "사용자 추가" 버튼 → 모달로 표시
      */
 
     import Icon from "$lib/icons/icon.svelte";
-    import { Pagination } from "$lib/components/ui";
+    import { Modal, Pagination } from "$lib/components/ui";
     import UserDetailModal from "./UserDetailModal.svelte";
 
-    /**
-     * 샘플 사용자 데이터
-     * 실제 구현 시 API 응답으로 대체됨
-     *
-     * API 응답 모델:
-     * - userId: 사용자 고유 ID (UUID)
-     * - externalId: 외부 IDP(Google, Azure 등) 연동 ID
-     * - displayName: 화면에 표시할 이름
-     * - email: 이메일 주소
-     * - phone: 연락처
-     * - affiliation: 소속 (회사/조직)
-     * - defaultTenantId: 기본 테넌트 ID
-     * - status: 상태 (Active, Inactive, Pending)
-     * - createdAt: 가입일시
-     */
     let users = $state([
         {
             userId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -75,29 +56,50 @@
     };
 
     // ========== 검색 ==========
-    let searchType = $state('email');         // 검색 타입: email, id
-    let searchQuery = $state('');             // 검색어
+    let searchType = $state('email');
+    let searchQuery = $state('');
 
     function handleSearch(e) {
         e.preventDefault();
         console.log('Search:', searchType, searchQuery);
-        // TODO: API 호출 - searchType에 따라 엔드포인트 분기
     }
 
     // ========== 모달 상태 ==========
-    let showDetailModal = $state(false);      // 상세 모달 표시 여부
-    let selectedUser = $state(null);          // 선택된 사용자 데이터
+    let showDetailModal = $state(false);
+    let showCreateModal = $state(false);
+    let selectedUser = $state(null);
+
+    // ========== 사용자 추가 폼 ==========
+    let formData = $state({
+        displayName: '',
+        email: '',
+        phone: '',
+        affiliation: '',
+    });
+
+    function resetForm() {
+        formData = {
+            displayName: '',
+            email: '',
+            phone: '',
+            affiliation: '',
+        };
+    }
+
+    function handleCreateUser(e) {
+        e.preventDefault();
+        console.log('Create user:', formData);
+        // TODO: API 호출
+        showCreateModal = false;
+        resetForm();
+    }
 
     // ========== 페이지네이션 ==========
     let currentPage = $state(1);
-    const totalItems = 156;                   // 전체 사용자 수 (API에서 받아옴)
-    const itemsPerPage = 10;                  // 페이지당 표시 개수
+    const totalItems = 156;
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    /**
-     * 날짜 포맷 함수
-     * ISO 문자열을 한국어 날짜 형식으로 변환
-     */
     function formatDate(dateString) {
         return new Date(dateString).toLocaleDateString('ko-KR', {
             year: 'numeric',
@@ -106,10 +108,6 @@
         });
     }
 
-    /**
-     * 테이블 행 클릭 핸들러
-     * 클릭한 사용자의 상세 모달을 표시
-     */
     function handleRowClick(user) {
         selectedUser = user;
         showDetailModal = true;
@@ -148,17 +146,20 @@
                         <Icon name="Search" size="sm" />
                     </button>
                 </form>
-                <a href="/admin/users/new" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center">
+                <!-- 사용자 추가 버튼 -->
+                <button 
+                    onclick={() => showCreateModal = true}
+                    class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center"
+                >
                     <Icon name="UserPlus" size="sm" class="inline mr-1" />
                     사용자 추가
-                </a>
+                </button>
             </div>
         </header>
 
         <!-- ===== 테이블 본문 ===== -->
         <section class="p-6">
             <table class="w-full">
-                <!-- 테이블 헤더 -->
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-800 text-left">
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">사용자</th>
@@ -169,18 +170,14 @@
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
                     </tr>
                 </thead>
-
-                <!-- 테이블 바디 - 사용자 목록 반복 -->
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                     {#each users as user}
                         <tr
                             class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
                             onclick={() => handleRowClick(user)}
                         >
-                            <!-- 사용자 정보 (아바타 + 이름 + 이메일) -->
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-3">
-                                    <!-- 아바타: 이름 첫 글자 표시 -->
                                     <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400 font-medium">
                                         {user.displayName.charAt(0)}
                                     </div>
@@ -190,31 +187,21 @@
                                     </div>
                                 </div>
                             </td>
-
-                            <!-- 소속 -->
                             <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                 {user.affiliation}
                             </td>
-
-                            <!-- 연락처 -->
                             <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                 {user.phone}
                             </td>
-
-                            <!-- 상태 배지 -->
                             <td class="px-4 py-3">
                                 <span class="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium {statusConfig[user.status]?.class} rounded-full">
                                     <span class="w-1.5 h-1.5 {statusConfig[user.status]?.dot} rounded-full"></span>
                                     {user.status}
                                 </span>
                             </td>
-
-                            <!-- 가입일 -->
                             <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                 {formatDate(user.createdAt)}
                             </td>
-
-                            <!-- 상세보기 버튼 -->
                             <td class="px-4 py-3">
                                 <button
                                     class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
@@ -244,3 +231,94 @@
 
 <!-- 사용자 상세 모달 -->
 <UserDetailModal bind:isOpen={showDetailModal} user={selectedUser} />
+
+
+<!-- 사용자 추가 모달 -->
+<Modal bind:isOpen={showCreateModal} title="사용자 추가" size="md">
+    <form id="createUserForm" onsubmit={handleCreateUser} class="space-y-6">
+        
+        <!-- 기본 정보 섹션 -->
+        <div class="space-y-4">
+            <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">기본 정보</h3>
+
+            <!-- 이름 + 이메일 (2열) -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                        이름 <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        bind:value={formData.displayName}
+                        placeholder="홍길동"
+                        required
+                        class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                        이메일 <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        bind:value={formData.email}
+                        placeholder="user@company.com"
+                        required
+                        class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors"
+                    />
+                </div>
+            </div>
+
+            <!-- 연락처 + 소속 (2열) -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                        연락처
+                    </label>
+                    <input
+                        type="tel"
+                        bind:value={formData.phone}
+                        placeholder="010-1234-5678"
+                        class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                        소속
+                    </label>
+                    <input
+                        type="text"
+                        bind:value={formData.affiliation}
+                        placeholder="회사/조직명"
+                        class="w-full px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- 역할 & 팀 배정 섹션 -->
+        <div class="space-y-4">
+            <h3 class="text-sm font-medium text-gray-800 dark:text-gray-200">역할 & 팀 배정</h3>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center">역할 선택 및 팀 배정 UI 영역</p>
+            </div>
+        </div>
+    </form>
+
+    {#snippet footer()}
+        <button 
+            type="button"
+            onclick={() => { showCreateModal = false; resetForm(); }}
+            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        >
+            취소
+        </button>
+        <button 
+            type="submit"
+            form="createUserForm"
+            class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors"
+        >
+            사용자 추가
+        </button>
+    {/snippet}
+</Modal>
