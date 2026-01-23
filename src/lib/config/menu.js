@@ -81,14 +81,14 @@ export const menuConfig = [
             lucideIcon: "Users",
             submenuList: [
                 {
-                    name: "users",
+                    name: "list",
                     innerText: "사용자 목록",
-                    url: "/admin/users",
+                    url: "/users/list",
                 },
                 {
                     name: "new",
                     innerText: "사용자 추가",
-                    url: "/admin/users/new",
+                    url: "/users/new",
                 },
             ]
         },
@@ -101,12 +101,12 @@ export const menuConfig = [
                 {
                     name: "permissions",
                     innerText: "권한 목록",
-                    url: "/admin/permissions",
+                    url: "/permissions",
                 },
                 {
                     name: "new",
                     innerText: "권한 추가",
-                    url: "/admin/permissions/new",
+                    url: "/permissions/new",
                 },
             ]
         },
@@ -119,12 +119,12 @@ export const menuConfig = [
                 {
                     name: "tenants",
                     innerText: "테넌트 목록",
-                    url: "/admin/tenants",
+                    url: "/tenants",
                 },
                 {
                     name: "new",
                     innerText: "테넌트 추가",
-                    url: "/admin/tenants/new",
+                    url: "/tenants/new",
                 },
             ]
         },
@@ -141,22 +141,22 @@ export const menuConfig = [
                 {
                     name: "spaces",
                     innerText: "Spaces",
-                    url: "/apps/cms/spaces",
+                    url: "/cms/spaces",
                 },
                 {
                     name: "contents",
                     innerText: "Contents",
-                    url: "/apps/cms/contents",
+                    url: "/cms/contents",
                 },
                 {
                     name: "tags",
                     innerText: "Tags",
-                    url: "/apps/cms/tags",
+                    url: "/cms/tags",
                 },
                 {
                     name: "topics",
                     innerText: "Topics",
-                    url: "/apps/cms/topics",
+                    url: "/cms/topics",
                 },
             ]
         },
