@@ -2,6 +2,17 @@
     import Icon from "$lib/icons/icon.svelte";
     import Modal from "$lib/components/ui/Modal.svelte";
     import { assetRequests } from "$lib/config/assets";
+  import { Breadcrumb, PageHeader } from "$lib/components/ui";
+
+
+
+    // ========== 통계 데이터 ==========
+    let stats = $derived({
+        totalAssets: 156,  // 기술자료 보유 수
+        pendingRequests: 12,  // 요청 대기 중
+        totalSales: 3,
+        freeProvided: 4
+    });
 
     let digitalAssetRequests = $state(null);
 
@@ -11,6 +22,7 @@
     let showDetailModal = $state(false);
     let selectedAsset = $state(null);
 
+    
     // 상태별 스타일
     const statusConfig = {
         approved: {
@@ -107,60 +119,70 @@
     }
 </script>
 
-<div>
-    <p class="text-2xl mb-2 ps-2 text-gray-800 dark:text-gray-100">대쉬보드</p>
+
+<div class="space-y-6">
+    <!-- 브레드크럼 -->
+    <Breadcrumb
+        items={[
+            { label: 'RMS' },
+            { label: '기여자 대시보드' }
+        ]} 
+    /> 
+    <!-- 헤더 -->
+    <PageHeader 
+        title="기여자 대시보드" 
+        description="전체 현황과 최근 변동사항을 확인합니다."
+    />
+
     <div class="grid grid-cols-1 gap-4">
-        <div class="grid grid-cols-3 gap-4">
-            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl h-fit">
-                <section class="p-6 flex">
-                    <div class="w-full flex flex-col gap-2">
-                        <p class="text-md text-gray-600 dark:text-gray-200">기술자료 요청 목록</p>
-                        <p class="text-3xl">{digitalAssetRequests.filter(a => a.status === 'pending').length}</p>
-                    </div>    
-                    <div class="min-w-14 min-h-14 flex items-center">
-                        <div class="w-14 h-14 rounded-full bg-warning-200 dark:bg-warning-800 text-warning-700 dark:text-warning-200 flex items-center justify-center">
-                            <Icon name="FileClock" size="lg"/>
-                        </div>
+        <!-- 통계 카드 -->
+        <div class="grid grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                        <Icon name="FolderOpen" size="md" class="text-blue-600 dark:text-blue-400" />
                     </div>
-                </section>
-                <footer class="px-6 pb-6">
-                    <a href="/rms/digital-asset-requests" class="hover:underline text-primary">전체보기</a>
-                </footer>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalAssets}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">기술자료 보유</p>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl h-fit">
-                <section class="p-6 flex">
-                    <div class="w-full flex flex-col gap-2">
-                        <p class="text-md text-gray-600 dark:text-gray-200">기술자료 누적 제공 수</p>
-                        <p class="text-3xl">{digitalAssetRequests.filter(a => a.status === 'approved').length}</p>
-                    </div>    
-                    <div class="min-w-14 min-h-14 flex items-center">
-                        <div class="w-14 h-14 rounded-full bg-success-300 dark:bg-success-800 text-success-700 dark:text-success-300 flex items-center justify-center">
-                            <Icon name="CloudUpload" size="lg"/>
-                        </div>
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
+                        <Icon name="ClipboardList" size="md" class="text-amber-600 dark:text-amber-400" />
                     </div>
-                </section>
-                <footer class="px-6 pb-6">
-                    <a href="/" class="hover:underline text-primary">전체보기</a>
-                </footer>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{stats.pendingRequests}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">요청 대기</p>
+                    </div>
+                </div>
             </div>
-            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl h-fit">
-                <section class="p-6 flex">
-                    <div class="w-full flex flex-col gap-2">
-                        <p class="text-md text-gray-600 dark:text-gray-200">기술자료 보유 수</p>
-                        <p class="text-3xl">{digitalAssetRequests.length}</p>
-                    </div>    
-                    <div class="min-w-14 min-h-14 flex items-center">
-                        <div class="w-14 h-14 rounded-full bg-primary-200 dark:bg-primary-700 text-primary-700 dark:text-primary-200 flex items-center justify-center">
-                            <Icon name="Files" size="lg"/>
-                        </div>
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                        <Icon name="ShoppingCart" size="md" class="text-green-600 dark:text-green-400" />
                     </div>
-                </section>
-                <footer class="px-6 pb-6">
-                    <a href="/" class="hover:underline text-primary">전체보기</a>
-                </footer>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalSales}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">총 판매건수</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                        <Icon name="Handshake" size="md" class="text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white">{stats.freeProvided}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">무료 제공</p>
+                    </div>
+                </div>
             </div>
         </div>
-        
+                
         <div class="grid grid-cols-1 gap-4">
             <!-- 최근 기술자료 승인 기록 Table -->
             <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">

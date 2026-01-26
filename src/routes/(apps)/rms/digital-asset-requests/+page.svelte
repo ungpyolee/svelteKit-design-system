@@ -1,6 +1,6 @@
 <script>
     import Icon from "$lib/icons/icon.svelte";
-    import { Modal, Pagination } from "$lib/components/ui";
+    import { Breadcrumb, Modal, PageHeader, Pagination } from "$lib/components/ui";
 
     let digitalAssetRequests = $state([
         { 
@@ -119,74 +119,89 @@
     }
 </script>
 
-<div class="grid grid-cols-1 gap-4">
-    <!-- 최근 등록된 기술자료 Table -->
-    <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-        <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-            <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 요청 목록</p>
-        </header>
-        <section class="p-6">
-            <table class="w-full">
-                 <thead>
-                    <tr class="bg-gray-50 dark:bg-gray-800 text-left">
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">기술자료</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청일</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청인</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인상태</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인자</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                    {#each digitalAssetRequests as asset}
-                        <tr 
-                            class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
-                            onclick={() => handleRowClick(asset)}
-                        >
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-                                        <Icon name="FileText" size="sm"/>
-                                    </div>
-                                    <span class="text-sm text-gray-800 dark:text-gray-200 truncate max-w-[200px]">
-                                        {asset.digitalAsset}
-                                    </span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.requestAt}</td>
-                            <td class="px-4 py-3">
-                                <div class="text-left">
-                                    <p class="text-sm text-gray-800 dark:text-gray-200">{asset.requester}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{asset.requesterEmail}</p>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">
-                                <span class="px-2 py-1 text-xs font-medium {statusConfig[asset.status].class} rounded-full">
-                                    {statusConfig[asset.status].label}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.approver}</td>
-                            <td class="px-4 py-3">
-                                <button 
-                                    class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                                    onclick={(e) => { e.stopPropagation(); handleRowClick(asset); }}
-                                >
-                                    <Icon name="ChevronRight" size="sm"/>
-                                </button>
-                            </td>
+<div class="space-y-6">
+    <!-- 브레드크럼 -->
+    <Breadcrumb
+        items={[
+            { label: 'RMS' },
+            { label: '기술자료 요청 목록' }
+        ]} 
+    /> 
+    <!-- 헤더 -->
+    <PageHeader 
+        title="기술자료 요청 목록" 
+        description="무료로 제공하는 기술자료에 대한 요청 목록입니다."
+    />
+
+    <div class="grid grid-cols-1 gap-4">
+        <!-- 최근 등록된 기술자료 Table -->
+        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+            <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 요청 목록</p>
+            </header>
+            <section class="p-6">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 dark:bg-gray-800 text-left">
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">기술자료</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청일</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">요청인</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인상태</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">승인자</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
                         </tr>
-                    {/each}
-                </tbody>
-            </table>
-        </section>
-        <footer class="px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-            <Pagination 
-                bind:currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={totalItems}
-                itemsPerPage={itemsPerPage}
-            />
-        </footer>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        {#each digitalAssetRequests as asset}
+                            <tr 
+                                class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+                                onclick={() => handleRowClick(asset)}
+                            >
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                                            <Icon name="FileText" size="sm"/>
+                                        </div>
+                                        <span class="text-sm text-gray-800 dark:text-gray-200 truncate max-w-[200px]">
+                                            {asset.digitalAsset}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.requestAt}</td>
+                                <td class="px-4 py-3">
+                                    <div class="text-left">
+                                        <p class="text-sm text-gray-800 dark:text-gray-200">{asset.requester}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{asset.requesterEmail}</p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-medium {statusConfig[asset.status].class} rounded-full">
+                                        {statusConfig[asset.status].label}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{asset.approver}</td>
+                                <td class="px-4 py-3">
+                                    <button 
+                                        class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                                        onclick={(e) => { e.stopPropagation(); handleRowClick(asset); }}
+                                    >
+                                        <Icon name="ChevronRight" size="sm"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </section>
+            <footer class="px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <Pagination 
+                    bind:currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                />
+            </footer>
+        </div>
     </div>
 </div>
 

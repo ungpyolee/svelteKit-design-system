@@ -1,6 +1,6 @@
 <script>
     import Icon from "$lib/icons/icon.svelte";
-    import { Modal, Pagination } from "$lib/components/ui";
+    import { Breadcrumb, Modal, PageHeader, Pagination } from "$lib/components/ui";
 
     let digitalAssets = $state([
         { 
@@ -9,6 +9,8 @@
             title: 'IPM-2024-0892 고효율 영구자석 동기전동기 설계 도면', 
             assetType: '설계도면',
             motorType: 'IPMSM',
+            price: 150000,
+            salesCount: 23,
             registrant: '김철수',
             registrantEmail: 'cs.kim@clew.tech'
         },
@@ -18,6 +20,8 @@
             title: 'SPM-2024-0156 표면부착형 영구자석 전동기 사양서', 
             assetType: '사양서',
             motorType: 'SPMSM',
+            price: 0,
+            salesCount: 45,
             registrant: '이민수',
             registrantEmail: 'ms.lee@clew.tech'
         },
@@ -27,6 +31,8 @@
             title: 'BLDC-2024-0567 BLDC 모터 제어 알고리즘 문서', 
             assetType: '기술문서',
             motorType: 'BLDC',
+            price: 75000,
+            salesCount: 12,
             registrant: '최지훈',
             registrantEmail: 'jh.choi@geneers.com'
         },
@@ -36,18 +42,20 @@
             title: 'SRM-2024-0891 스위치드 릴럭턴스 전동기 해석 보고서', 
             assetType: '해석보고서',
             motorType: 'SRM',
+            price: 50000,
+            salesCount: 8,
             registrant: '한소영',
             registrantEmail: 'sy.han@clew.tech'
         },
     ]);
 
-        // 자료 타입별 스타일
+    // 자료 타입별 스타일
     const assetTypeConfig = {
-        '설계도면': { class: 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' },
-        '사양서': { class: 'bg-info-100 text-info-700 dark:bg-info-900/30 dark:text-info-400' },
-        '시험성적서': { class: 'bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400' },
-        '기술문서': { class: 'bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400' },
-        '해석보고서': { class: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
+        '설계도면': { class: 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-400' },
+        '사양서': { class: 'bg-info-100 text-info-700 dark:bg-info-900 dark:text-info-400' },
+        '시험성적서': { class: 'bg-success-100 text-success-700 dark:bg-success-900 dark:text-success-400' },
+        '기술문서': { class: 'bg-warning-100 text-warning-700 dark:bg-warning-900 dark:text-warning-400' },
+        '해석보고서': { class: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-400' },
     };
 
     // 전동기 타입별 스타일
@@ -59,7 +67,7 @@
         'SRM': { label: 'SRM', class: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
     };
 
-    // 모달 상태 추가
+    // 모달 상태
     let showAssetDetailModal = $state(false);
     let selectedRecentAsset = $state(null);
 
@@ -68,8 +76,7 @@
         showAssetDetailModal = true;
     }
 
-
-    // 페이지 네이션    
+    // 페이지네이션    
     let currentPage = $state(1);
     const totalItems = 156;
     const itemsPerPage = 10;
@@ -77,102 +84,132 @@
     
     function handlePageChange(page) {
         console.log('Page changed to:', page);
-        // API 호출 등
     }
 </script>
 
-<div class="grid grid-cols-1 gap-4">
-    <!-- 최근 등록된 기술자료 Table -->
-    <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
-        <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-            <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 목록</p>
-            <div class="flex items-center gap-2">
-                <a href="digital-assets/new" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center">
-                    <Icon name="FilePlus" size="sm" class="inline mr-1" />
-                    새 기술자료
-                </a>
-            </div>
-        </header>
-        <section class="p-6">
-            <table class="w-full">
-                <thead>
-                    <tr class="bg-gray-50 dark:bg-gray-800 text-left">
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">기술자료</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">자료 타입</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">전동기 타입</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">등록인</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">등록일</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                    {#each digitalAssets as asset}
-                        <tr 
-                            class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
-                            onclick={() => handleAssetRowClick(asset)}
-                        >
-                            <td class="px-4 py-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
-                                        <Icon name="FileText" size="sm"/>
-                                    </div>
-                                    <span class="text-sm text-gray-800 dark:text-gray-200 truncate max-w-[250px]">
-                                        {asset.title}
-                                    </span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">
-                                <span class="px-2 py-1 text-xs font-medium {assetTypeConfig[asset.assetType]?.class || 'bg-gray-100 text-gray-700'} rounded-full">
-                                    {asset.assetType}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3">
-                                <span class="px-2 py-1 text-xs font-medium {motorTypeConfig[asset.motorType]?.class} rounded">
-                                    {asset.motorType}
-                                </span>
-                            </td>
-                            <td class="px-4 py-3">
-                                <div class="text-left">
-                                    <p class="text-sm text-gray-800 dark:text-gray-200">{asset.registrant}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">{asset.registrantEmail}</p>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                                {asset.registeredDate}
-                            </td>
-                            <td class="px-4 py-3">
-                                <button 
-                                    class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                                    onclick={(e) => { e.stopPropagation(); handleAssetRowClick(asset); }}
-                                >
-                                    <Icon name="ChevronRight" size="sm"/>
-                                </button>
-                            </td>
+<div class="space-y-6">
+    <!-- 브레드크럼 -->
+    <Breadcrumb
+        items={[
+            { label: 'RMS' },
+            { label: '기술자료' },
+        ]} 
+    />  
+    <!-- 헤더 -->
+    <PageHeader 
+        title="기술자료 목록" 
+        description="등록된 기술자료 목록입니다."
+    />
+
+
+    <div class="grid grid-cols-1 gap-4">
+        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl">
+            <header class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기술자료 목록</p>
+                <div class="flex items-center gap-2">
+                    <a href="digital-assets/new" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center">
+                        <Icon name="FilePlus" size="sm" class="inline mr-1" />
+                        새 기술자료
+                    </a>
+                </div>
+            </header>
+            <section class="p-6">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 dark:bg-gray-800 text-left">
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">기술자료</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">자료 타입</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">전동기 타입</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 text-right">가격</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 text-center">판매</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">등록인</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">등록일</th>
+                            <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 w-20"></th>
                         </tr>
-                    {/each}
-                </tbody>
-            </table>
-        </section>
-        <footer class="px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-            <Pagination 
-                bind:currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={totalItems}
-                itemsPerPage={itemsPerPage}
-            />
-        </footer>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        {#each digitalAssets as asset}
+                            <tr 
+                                class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                                onclick={() => handleAssetRowClick(asset)}
+                            >
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                                            <Icon name="FileText" size="sm"/>
+                                        </div>
+                                        <span class="text-sm text-gray-800 dark:text-gray-200 truncate max-w-[250px]">
+                                            {asset.title}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-medium {assetTypeConfig[asset.assetType]?.class || 'bg-gray-100 text-gray-700'} rounded-full">
+                                        {asset.assetType}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-medium {motorTypeConfig[asset.motorType]?.class} rounded">
+                                        {asset.motorType}
+                                    </span>
+                                </td>
+                                <!-- 가격 컬럼 -->
+                                <td class="px-4 py-3 text-right">
+                                    {#if asset.price === 0}
+                                        <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-medium rounded-full">
+                                            <Icon name="Gift" size="xs" />
+                                            무료
+                                        </span>
+                                    {:else}
+                                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                            {asset.price.toLocaleString('ko-KR')}원
+                                        </span>
+                                    {/if}
+                                </td>
+                                <!-- 판매수 컬럼 -->
+                                <td class="px-4 py-3 text-center">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">{asset.salesCount}건</span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="text-left">
+                                        <p class="text-sm text-gray-800 dark:text-gray-200">{asset.registrant}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{asset.registrantEmail}</p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                                    {asset.registeredDate}
+                                </td>
+                                <td class="px-4 py-3">
+                                    <button 
+                                        class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                                        onclick={(e) => { e.stopPropagation(); handleAssetRowClick(asset); }}
+                                    >
+                                        <Icon name="ChevronRight" size="sm"/>
+                                    </button>
+                                </td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </section>
+            <footer class="px-6 py-4 border-t border-gray-100 dark:border-gray-800">
+                <Pagination 
+                    bind:currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                />
+            </footer>
+        </div>
     </div>
 </div>
-
-
 
 <!-- 기술자료 상세 모달 -->
 <Modal bind:isOpen={showAssetDetailModal} title="기술자료 상세" size="lg">
     {#if selectedRecentAsset}
         <div class="space-y-6">
-            <!-- 기술자료 정보 -->
             <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 dark:text-primary-400">
+                <div class="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400">
                     <Icon name="FileText" size="md"/>
                 </div>
                 <div class="flex-1">
@@ -181,7 +218,6 @@
                 </div>
             </div>
 
-            <!-- 타입 정보 -->
             <div class="flex items-center gap-2">
                 <span class="px-2 py-1 text-xs font-medium {assetTypeConfig[selectedRecentAsset.assetType]?.class} rounded-full">
                     {selectedRecentAsset.assetType}
@@ -191,19 +227,27 @@
                 </span>
             </div>
 
-            <!-- 상세 정보 -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-3 gap-4">
                 <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">등록일</p>
                     <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedRecentAsset.registeredDate}</p>
                 </div>
                 <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">자료 타입</p>
-                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedRecentAsset.assetType}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">가격</p>
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                        {#if selectedRecentAsset.price === 0}
+                            무료
+                        {:else}
+                            {selectedRecentAsset.price.toLocaleString('ko-KR')}원
+                        {/if}
+                    </p>
+                </div>
+                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">판매수</p>
+                    <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{selectedRecentAsset.salesCount}건</p>
                 </div>
             </div>
 
-            <!-- 등록인 정보 -->
             <div class="p-4 border border-gray-100 dark:border-gray-800 rounded-lg">
                 <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">등록인 정보</p>
                 <div class="flex items-center gap-3">
