@@ -3,44 +3,47 @@
     import { Modal, Pagination } from "$lib/components/ui";
     
     let teams = $state([
-        { 
-            id: 'team_001', 
-            name: 'CLEW', 
+        {
+            id: 'team_001',
+            name: 'CLEW',
+            slug: 'CLEW',
             description: 'Main development team for CLEW platform',
             role: 'Owner',
             createdAt: '2024-03-15',
             isActive: true
         },
-        { 
-            id: 'team_002', 
-            name: 'Motorspace', 
+        {
+            id: 'team_002',
+            name: 'Motorspace',
+            slug: 'Motorspace',
             description: 'Electric motor design and simulation team',
-            role: 'Admin',
+            role: 'Member',
             createdAt: '2024-05-22',
             isActive: true
         },
-        { 
-            id: 'team_003', 
-            name: 'GENEERS', 
+        {
+            id: 'team_003',
+            name: 'GENEERS',
+            slug: 'GENEERS',
             description: 'Engineering solutions and consulting',
             role: 'Member',
             createdAt: '2024-08-10',
             isActive: true
         },
-        { 
-            id: 'team_004', 
-            name: 'Legacy Project', 
+        {
+            id: 'team_004',
+            name: 'Legacy Project',
+            slug: 'Legacy Project',
             description: 'Archived project team',
             role: 'Member',
             createdAt: '2023-11-05',
             isActive: false
         },
     ]);
-    
+
     // Role 스타일 config
     const roleConfig = {
         'Owner': { class: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
-        'Admin': { class: 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' },
         'Member': { class: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300' },
     };
     
@@ -103,7 +106,7 @@
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-800 text-left">
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">팀/조직</th>
-                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">ID</th>
+                        <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Slug</th>
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">내 권한</th>
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">생성일</th>
                         <th class="px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300">상태</th>
@@ -129,10 +132,10 @@
                                 </div>
                             </td>
                             
-                            <!-- Team ID -->
+                            <!-- Team Slug -->
                             <td class="px-4 py-3">
                                 <code class="text-xs font-mono text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                                    {team.id}
+                                    {team.slug}
                                 </code>
                             </td>
                             
@@ -166,15 +169,15 @@
                             <!-- Actions -->
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-1">
-                                    {#if team.role === 'Owner' || team.role === 'Admin'}
-                                        <button 
+                                    {#if team.role === 'Owner'}
+                                        <button
                                             onclick={(e) => handleEdit(e, team)}
                                             class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                                             title="Edit"
                                         >
                                             <Icon name="Pencil" size="sm" />
                                         </button>
-                                        <button 
+                                        <button
                                             onclick={(e) => handleToggleStatus(e, team)}
                                             class="p-1.5 text-gray-400 hover:text-warning-600 hover:bg-warning-50 dark:hover:bg-warning-900/20 rounded-lg transition-colors"
                                             title={team.isActive ? 'Disable' : 'Enable'}
@@ -245,7 +248,11 @@
             </div>
 
             <!-- 상세 정보 그리드 -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-3 gap-4">
+                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Slug</p>
+                    <code class="text-sm font-mono font-medium text-gray-800 dark:text-gray-200">{selectedTeam.slug}</code>
+                </div>
                 <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Team ID</p>
                     <code class="text-sm font-mono font-medium text-gray-800 dark:text-gray-200">{selectedTeam.id}</code>
@@ -268,8 +275,6 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400">
                             {#if selectedTeam.role === 'Owner'}
                                 Full access to all team settings and members
-                            {:else if selectedTeam.role === 'Admin'}
-                                Can manage team settings and invite members
                             {:else}
                                 Can view team resources and collaborate
                             {/if}
@@ -287,11 +292,11 @@
         >
             닫기
         </button>
-        <a 
-            href="/settings/teams/{selectedTeam?.id}"
+        <a
+            href="/setting/manage-teams/{selectedTeam?.id}"
             class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors"
         >
-            상세페이지 이동
+            멤버 관리
         </a>
     {/snippet}
 </Modal>

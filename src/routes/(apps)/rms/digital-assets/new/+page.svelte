@@ -322,18 +322,6 @@
                         <p class="text-lg font-medium text-gray-800 dark:text-gray-100">기본 정보</p>
                     </header>
                     <section class="p-6 space-y-4">
-                        <!-- 자료 번호 -->
-                        <!-- <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                자료 번호 <span class="text-danger">*</span>
-                            </label>
-                            <input 
-                                type="text"
-                                bind:value={formData.assetNumber}
-                                placeholder="예: IPM-2024-0001"
-                                class="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                            />
-                        </div> -->
 
                         <!-- 제목 -->
                         <div>
@@ -503,22 +491,12 @@
                     <header class="px-6 py-4 border-b border-gray-100 dark:border-gray-800">
                         <p class="text-lg font-medium text-gray-800 dark:text-gray-100">상세설명</p>
                     </header>
-                    <!-- TODO: Editor.js 컴포넌트 삽입 위치 -->
-                    <!-- <section class="px-12 py-4">
-                        <Editor 
+                    <section class="px-12 py-4">
+                        <EditorJs 
                             bind:this={editorRef}
                             placeholder="기술자료에 대한 상세 설명을 입력하세요..."
                             onChange={(data) => descriptionData = data}
                         />
-                    </section> -->
-                    <section class="p-6">
-                        <div class="rounded-lg overflow-hidden border border-gray-100">
-                        <EditorQuill
-                            bind:this={editorRef}
-                            placeholder="상품 상세 설명을 입력하세요..."
-                            onChange={(html) => content = html}
-                        />
-                        </div>
                     </section>
                 </div>
             </div>

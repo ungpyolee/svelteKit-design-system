@@ -3,15 +3,15 @@
     import Icon from "$lib/icons/icon.svelte";
     import Modal from "$lib/components/ui/Modal.svelte";
     import Pagination from "$lib/components/ui/Pagination.svelte";
+    import { Breadcrumb } from "$lib/components/ui";
     import { cn } from "$lib/utils";
-    
-    // 더미 데이터 (실제로는 API에서 가져옴)
+
+    // 더미 데이터 (실제로는 API에서 가져옴) - 등록 페이지 형식에 맞춤
     let asset = $state({
         id: "a1b2c3d4-5678-9012-abcd-ef1234567890",
         assetNumber: "IPM-2024-0892",
         title: "고효율 영구자석 동기전동기 설계 도면",
-        subTitle: "IPM 모터 냉각 구조 및 자석 배치 상세 설계",
-        bodyCopy: "본 설계 도면은 고효율 IPMSM 모터의 전체 구조를 포함합니다. 냉각 시스템 설계, V자형 자석 배치, 로터/스테이터 상세 치수가 포함되어 있으며, 전기차 구동 모터 적용을 목표로 설계되었습니다. 최대 효율 97.2%, 정격 출력 150kW 사양입니다.",
+        summary: "본 설계 도면은 고효율 IPMSM 모터의 전체 구조를 포함합니다. 냉각 시스템 설계, V자형 자석 배치, 로터/스테이터 상세 치수가 포함되어 있으며, 전기차 구동 모터 적용을 목표로 설계되었습니다. 최대 효율 97.2%, 정격 출력 150kW 사양입니다.",
         tags: ["IPMSM", "전기차", "냉각설계", "고효율", "150kW"],
         filters: {
             MachineType: {
@@ -25,10 +25,62 @@
                 description: "CAD 설계 도면 및 3D 모델"
             }
         },
+        // 상세설명 (EditorJs 형식)
+        detailContent: {
+            time: 1706169421000,
+            blocks: [
+                {
+                    id: "block-1",
+                    type: "header",
+                    data: { text: "IPMSM 모터 설계 개요", level: 2 }
+                },
+                {
+                    id: "block-2",
+                    type: "paragraph",
+                    data: { text: "본 설계는 전기차 구동용 150kW급 IPMSM 모터의 상세 설계 도면입니다. 최대 효율 97.2%를 달성하기 위한 최적화된 자석 배치와 냉각 구조를 포함합니다." }
+                },
+                {
+                    id: "block-3",
+                    type: "header",
+                    data: { text: "주요 특징", level: 3 }
+                },
+                {
+                    id: "block-4",
+                    type: "list",
+                    data: {
+                        style: "unordered",
+                        items: [
+                            "V자형 자석 배치로 높은 토크 밀도 실현",
+                            "수냉식 냉각 시스템 적용",
+                            "분할 코어 구조로 제조 용이성 확보",
+                            "NVH 최적화 설계 반영"
+                        ]
+                    }
+                },
+                {
+                    id: "block-5",
+                    type: "header",
+                    data: { text: "기술 사양", level: 3 }
+                },
+                {
+                    id: "block-6",
+                    type: "paragraph",
+                    data: { text: "정격 출력: 150kW, 최대 토크: 350Nm, 최고 회전수: 12,000rpm, 효율: 97.2% (정격점), 냉각 방식: 수냉식 (워터자켓)" }
+                },
+                {
+                    id: "block-7",
+                    type: "quote",
+                    data: {
+                        text: "본 설계 도면은 실제 양산 적용을 위한 상세 설계가 포함되어 있으며, 제조 공정에 직접 활용 가능합니다.",
+                        caption: "설계팀 검토 의견"
+                    }
+                }
+            ]
+        },
         tenantId: "tenant-clew-001",
         isGrantRequiredItem: true,
-        disclosureRange: "team",
-        listPrice: 50000,
+        disclosureRange: "국내전동기 관련 제조업체/연구기관",
+        listPrice: 0,
         publishStatus: 1,
         contributor: {
             userId: "user-001",
@@ -39,7 +91,7 @@
             {
                 id: "file-001",
                 displayName: "IPM_Motor_Assembly_v1.2.dwg",
-                description: "전체 조립도",
+                description: "전체 조립도 - 3D CAD 파일",
                 storageKey: "assets/ipm-2024-0892/assembly.dwg",
                 contentType: "application/dwg",
                 fileExtension: ".dwg",
@@ -55,14 +107,23 @@
                 fileExtension: ".pdf",
                 fileSizeInByte: 8540160,
                 uploadedAt: "2024-01-10T09:35:00.000Z"
+            },
+            {
+                id: "file-003",
+                displayName: "Rotor_Stator_Specs.xlsx",
+                description: "로터/스테이터 상세 사양표",
+                storageKey: "assets/ipm-2024-0892/specs.xlsx",
+                contentType: "application/xlsx",
+                fileExtension: ".xlsx",
+                fileSizeInByte: 1245184,
+                uploadedAt: "2024-01-10T09:40:00.000Z"
             }
         ],
-        metaTag: {
-            title: "IPM-2024-0892 고효율 IPMSM 설계 도면",
-            keywords: "IPMSM, 전기차 모터, 냉각설계, 영구자석",
-            description: "150kW급 고효율 IPMSM 모터의 상세 설계 도면입니다.",
-            thumbnailKey: "https://rms-api.motorspace.org/images/thumbnails/088c1cbb-670a-4767-9f02-69209dfc85bc/af55379d-cc8c-46a5-b864-4689b07329f7.png"
-        },
+        // 메타 정보 (SEO)
+        metaTitle: "고효율 IPMSM 전동기 설계도면 | 전기차 모터 전문",
+        metaKeywords: "IPMSM, 전기차 모터, 영구자석 동기전동기, 150kW, 고효율 모터, 냉각설계",
+        metaDescription: "97.2% 고효율 달성 IPMSM 설계 도면입니다. V자형 자석 배치, 수냉식 냉각 구조 포함. 전기차 구동 모터 개발에 최적화된 설계입니다.",
+        thumbnailKey: "https://picsum.photos/seed/motor1/800/450",
         createdAt: "2024-01-10T09:00:00.000Z",
         updatedAt: "2024-01-15T14:20:00.000Z"
     });
@@ -114,12 +175,6 @@
         rejected: { label: '반려', class: 'bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400' }
     };
 
-    const disclosureConfig = {
-        team: { label: '팀 내 공개', class: 'bg-info-100 text-info-700 dark:bg-info-900/30 dark:text-info-400' },
-        organization: { label: '조직 내 공개', class: 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' },
-        restricted: { label: '제한 공개', class: 'bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400' }
-    };
-
     // 파일 아이콘
     function getFileIcon(extension) {
         const icons = {
@@ -152,7 +207,38 @@
 
     // 가격 포맷
     function formatPrice(price) {
+        if (price === 0) return '무료';
         return new Intl.NumberFormat('ko-KR').format(price) + '원';
+    }
+
+    // EditorJs 블록 렌더링
+    function renderBlock(block) {
+        switch (block.type) {
+            case 'header':
+                return `<h${block.data.level} class="editor-header-${block.data.level}">${block.data.text}</h${block.data.level}>`;
+            case 'paragraph':
+                return `<p class="editor-paragraph">${block.data.text}</p>`;
+            case 'list':
+                const listTag = block.data.style === 'ordered' ? 'ol' : 'ul';
+                const items = block.data.items.map(item => `<li>${item}</li>`).join('');
+                return `<${listTag} class="editor-list editor-list-${block.data.style}">${items}</${listTag}>`;
+            case 'quote':
+                return `<blockquote class="editor-quote">
+                    <p>${block.data.text}</p>
+                    ${block.data.caption ? `<cite>${block.data.caption}</cite>` : ''}
+                </blockquote>`;
+            case 'code':
+                return `<pre class="editor-code"><code>${block.data.code}</code></pre>`;
+            case 'delimiter':
+                return `<hr class="editor-delimiter" />`;
+            case 'image':
+                return `<figure class="editor-image">
+                    <img src="${block.data.file?.url || block.data.url}" alt="${block.data.caption || ''}" />
+                    ${block.data.caption ? `<figcaption>${block.data.caption}</figcaption>` : ''}
+                </figure>`;
+            default:
+                return '';
+        }
     }
 
     // 요청 상세 모달
@@ -188,31 +274,36 @@
     // 필터
     let statusFilter = $state('all');
     let filteredRequests = $derived(
-        statusFilter === 'all' 
-            ? assetRequests 
+        statusFilter === 'all'
+            ? assetRequests
             : assetRequests.filter(r => r.status === statusFilter)
     );
 
     // 페이지네이션
     let currentPage = $state(1);
     const itemsPerPage = 10;
+
+    // 탭 상태
+    let activeInfoTab = $state('detail'); // 'detail' | 'meta'
 </script>
 
 <div class="space-y-6">
     <!-- 브레드크럼 -->
-    <nav class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-        <a href="/rms/digital-assets" class="hover:text-primary">Digital Assets</a>
-        <Icon name="ChevronRight" size="xs" />
-        <span class="text-gray-800 dark:text-gray-200">{asset.assetNumber}</span>
-    </nav>
+    <Breadcrumb
+        items={[
+            { label: 'RMS' },
+            { label: '기술자료', href: '/rms/digital-assets' },
+            { label: asset.assetNumber }
+        ]}
+    />
 
     <!-- 헤더 섹션 -->
     <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
         <div class="relative">
             <!-- 썸네일 이미지 -->
             <div class="h-48 bg-gradient-to-r from-primary-500 to-primary-700 relative">
-                <img 
-                    src={asset.metaTag.thumbnailKey} 
+                <img
+                    src={asset.thumbnailKey}
                     alt={asset.title}
                     class="w-full h-full object-cover opacity-30"
                 />
@@ -230,7 +321,6 @@
                             </span>
                         </div>
                         <h1 class="text-2xl font-bold text-white mb-1">{asset.title}</h1>
-                        <p class="text-white/80">{asset.subTitle}</p>
                     </div>
                 </div>
             </div>
@@ -239,12 +329,9 @@
         <!-- 액션 버튼 -->
         <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <span class={cn("px-2 py-1 text-xs font-medium rounded-full", disclosureConfig[asset.disclosureRange]?.class)}>
-                    {disclosureConfig[asset.disclosureRange]?.label}
-                </span>
                 {#if asset.isGrantRequiredItem}
-                    <span class="flex items-center gap-1 text-sm text-warning-600 dark:text-warning-400">
-                        <Icon name="ShieldAlert" size="sm" />
+                    <span class="flex items-center gap-1 px-2 py-1 text-xs font-medium bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400 rounded-full">
+                        <Icon name="ShieldAlert" size="xs" />
                         승인 필요
                     </span>
                 {/if}
@@ -253,15 +340,15 @@
                 </span>
             </div>
             <div class="flex items-center gap-2">
-                <a 
+                <a
                     href="/rms/digital-assets/{asset.id}/edit"
-                    class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg transition-colors flex items-center gap-1"
                 >
-                    <Icon name="Pencil" size="sm" class="inline mr-1" />
+                    <Icon name="Pencil" size="sm" />
                     수정
                 </a>
-                <button class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors">
-                    <Icon name="Download" size="sm" class="inline mr-1" />
+                <button class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-1">
+                    <Icon name="Download" size="sm" />
                     다운로드
                 </button>
             </div>
@@ -270,13 +357,16 @@
         <!-- 상세 정보 -->
         <div class="p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- 왼쪽: 설명 -->
+                <!-- 왼쪽: 메인 콘텐츠 -->
                 <div class="lg:col-span-2 space-y-6">
-                    <!-- 설명 -->
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">설명</h3>
+                    <!-- 요약설명 -->
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
+                            <Icon name="FileText" size="sm" class="text-primary" />
+                            요약설명
+                        </h3>
                         <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                            {asset.bodyCopy}
+                            {asset.summary}
                         </p>
                     </div>
 
@@ -285,7 +375,7 @@
                         <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2">태그</h3>
                         <div class="flex flex-wrap gap-2">
                             {#each asset.tags as tag}
-                                <span class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
+                                <span class="px-3 py-1 text-sm bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full">
                                     #{tag}
                                 </span>
                             {/each}
@@ -294,7 +384,8 @@
 
                     <!-- 첨부파일 -->
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3">
+                        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+                            <Icon name="Paperclip" size="sm" class="text-primary" />
                             첨부파일 ({asset.assetFiles.length})
                         </h3>
                         <div class="space-y-2">
@@ -318,9 +409,102 @@
                             {/each}
                         </div>
                     </div>
+
+                    <!-- 상세설명 / 메타정보 탭 -->
+                    <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
+                        <!-- 탭 헤더 -->
+                        <div class="flex border-b border-gray-100 dark:border-gray-800">
+                            <button
+                                onclick={() => activeInfoTab = 'detail'}
+                                class="flex-1 px-6 py-3 text-sm font-medium transition-colors {activeInfoTab === 'detail' ? 'text-primary border-b-2 border-primary bg-primary-50 dark:bg-primary-900/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
+                            >
+                                <Icon name="FileText" size="sm" class="inline mr-2" />
+                                상세설명
+                            </button>
+                            <button
+                                onclick={() => activeInfoTab = 'meta'}
+                                class="flex-1 px-6 py-3 text-sm font-medium transition-colors {activeInfoTab === 'meta' ? 'text-primary border-b-2 border-primary bg-primary-50 dark:bg-primary-900/10' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
+                            >
+                                <Icon name="Search" size="sm" class="inline mr-2" />
+                                메타 정보 (SEO)
+                            </button>
+                        </div>
+
+                        <!-- 탭 콘텐츠 -->
+                        <div class="p-6">
+                            {#if activeInfoTab === 'detail'}
+                                <!-- 상세설명 (EditorJs 렌더링) -->
+                                {#if asset.detailContent?.blocks?.length > 0}
+                                    <div class="editor-content prose dark:prose-invert max-w-none">
+                                        {#each asset.detailContent.blocks as block}
+                                            {@html renderBlock(block)}
+                                        {/each}
+                                    </div>
+                                {:else}
+                                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                        <Icon name="FileText" size="lg" class="mx-auto mb-2 opacity-50" />
+                                        <p>상세설명이 없습니다.</p>
+                                    </div>
+                                {/if}
+                            {:else}
+                                <!-- 메타 정보 -->
+                                <div class="space-y-4">
+                                    <!-- 메타 타이틀 -->
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">HTML 메타 타이틀</label>
+                                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                            <p class="text-sm text-gray-800 dark:text-gray-200">{asset.metaTitle || '-'}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- 메타 키워드 -->
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">HTML 메타 키워드</label>
+                                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                            {#if asset.metaKeywords}
+                                                <div class="flex flex-wrap gap-1">
+                                                    {#each asset.metaKeywords.split(',').map(k => k.trim()) as keyword}
+                                                        <span class="px-2 py-0.5 text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded">
+                                                            {keyword}
+                                                        </span>
+                                                    {/each}
+                                                </div>
+                                            {:else}
+                                                <p class="text-sm text-gray-500 dark:text-gray-400">-</p>
+                                            {/if}
+                                        </div>
+                                    </div>
+
+                                    <!-- 메타 설명 -->
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">HTML 메타 설명</label>
+                                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                            <p class="text-sm text-gray-800 dark:text-gray-200">{asset.metaDescription || '-'}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- 검색 결과 미리보기 -->
+                                    <div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3">검색 결과 미리보기</p>
+                                        <div class="p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                            <p class="text-blue-600 dark:text-blue-400 text-base font-medium truncate">
+                                                {asset.metaTitle || asset.title}
+                                            </p>
+                                            <p class="text-green-700 dark:text-green-500 text-xs mt-1">
+                                                https://example.com/digital-assets/{asset.id}
+                                            </p>
+                                            <p class="text-gray-600 dark:text-gray-400 text-sm mt-1 line-clamp-2">
+                                                {asset.metaDescription || asset.summary}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 오른쪽: 메타 정보 -->
+                <!-- 오른쪽: 사이드바 -->
                 <div class="space-y-4">
                     <!-- 등록자 정보 -->
                     <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -362,6 +546,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 공개 설정 -->
+                    <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg space-y-3">
+                        <h3 class="text-xs text-gray-500 dark:text-gray-400">공개 설정</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500 dark:text-gray-400">공개 범위</span>
+                                <span class="text-sm font-medium text-gray-800 dark:text-gray-200 text-right max-w-[150px]">{asset.disclosureRange || '-'}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500 dark:text-gray-400">승인 필요</span>
+                                <span class="text-sm font-medium {asset.isGrantRequiredItem ? 'text-warning-600 dark:text-warning-400' : 'text-gray-800 dark:text-gray-200'}">
+                                    {asset.isGrantRequiredItem ? '예' : '아니오'}
+                                </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500 dark:text-gray-400">가격</span>
+                                <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{formatPrice(asset.listPrice)}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -379,7 +584,7 @@
                 </span>
             </div>
             <div class="flex items-center gap-2">
-                <select 
+                <select
                     bind:value={statusFilter}
                     class="px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 >
@@ -436,13 +641,13 @@
                                 <td class="px-4 py-3">
                                     {#if request.status === 'pending'}
                                         <div class="flex items-center gap-1">
-                                            <button 
+                                            <button
                                                 onclick={() => openProcessModal(request, 'approve')}
                                                 class="px-2 py-1 text-xs font-medium bg-success-100 text-success-700 hover:bg-success-200 dark:bg-success-900/30 dark:text-success-400 dark:hover:bg-success-900/50 rounded transition-colors"
                                             >
                                                 승인
                                             </button>
-                                            <button 
+                                            <button
                                                 onclick={() => openProcessModal(request, 'reject')}
                                                 class="px-2 py-1 text-xs font-medium bg-danger-100 text-danger-700 hover:bg-danger-200 dark:bg-danger-900/30 dark:text-danger-400 dark:hover:bg-danger-900/50 rounded transition-colors"
                                             >
@@ -450,7 +655,7 @@
                                             </button>
                                         </div>
                                     {:else}
-                                        <button 
+                                        <button
                                             onclick={() => openRequestDetail(request)}
                                             class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                                         >
@@ -473,7 +678,7 @@
         </section>
         {#if filteredRequests.length > itemsPerPage}
             <footer class="px-6 py-4 border-t border-gray-100 dark:border-gray-800">
-                <Pagination 
+                <Pagination
                     bind:currentPage={currentPage}
                     totalPages={Math.ceil(filteredRequests.length / itemsPerPage)}
                     totalItems={filteredRequests.length}
@@ -529,7 +734,7 @@
     {/if}
 
     {#snippet footer()}
-        <button 
+        <button
             onclick={() => showRequestModal = false}
             class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
         >
@@ -554,12 +759,12 @@
                 </div>
                 <p class="text-sm text-gray-600 dark:text-gray-400">{selectedRequest.requestDescription}</p>
             </div>
-            
+
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     {processType === 'approve' ? '승인' : '반려'} 사유 <span class="text-danger">*</span>
                 </label>
-                <textarea 
+                <textarea
                     bind:value={processDescription}
                     rows="4"
                     placeholder={processType === 'approve' ? '승인 사유를 입력하세요...' : '반려 사유를 입력하세요...'}
@@ -570,19 +775,19 @@
     {/if}
 
     {#snippet footer()}
-        <button 
+        <button
             onclick={() => showProcessModal = false}
             class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
         >
             취소
         </button>
-        <button 
+        <button
             onclick={handleProcess}
             disabled={!processDescription.trim()}
             class={cn(
                 "px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed",
-                processType === 'approve' 
-                    ? "bg-success hover:bg-success-600" 
+                processType === 'approve'
+                    ? "bg-success hover:bg-success-600"
                     : "bg-danger hover:bg-danger-600"
             )}
         >
@@ -590,3 +795,70 @@
         </button>
     {/snippet}
 </Modal>
+
+<style>
+    /* EditorJs 콘텐츠 스타일 */
+    :global(.editor-content .editor-header-2) {
+        @apply text-xl font-bold text-gray-900 dark:text-gray-100 mt-6 mb-3;
+    }
+
+    :global(.editor-content .editor-header-3) {
+        @apply text-lg font-semibold text-gray-900 dark:text-gray-100 mt-5 mb-2;
+    }
+
+    :global(.editor-content .editor-header-4) {
+        @apply text-base font-semibold text-gray-900 dark:text-gray-100 mt-4 mb-2;
+    }
+
+    :global(.editor-content .editor-paragraph) {
+        @apply text-gray-700 dark:text-gray-300 mb-4 leading-relaxed;
+    }
+
+    :global(.editor-content .editor-list) {
+        @apply mb-4 pl-5 space-y-1;
+    }
+
+    :global(.editor-content .editor-list-unordered) {
+        @apply list-disc;
+    }
+
+    :global(.editor-content .editor-list-ordered) {
+        @apply list-decimal;
+    }
+
+    :global(.editor-content .editor-list li) {
+        @apply text-gray-700 dark:text-gray-300;
+    }
+
+    :global(.editor-content .editor-quote) {
+        @apply border-l-4 border-primary pl-4 py-2 my-4 bg-gray-50 dark:bg-gray-800 rounded-r-lg italic;
+    }
+
+    :global(.editor-content .editor-quote p) {
+        @apply text-gray-700 dark:text-gray-300 mb-2;
+    }
+
+    :global(.editor-content .editor-quote cite) {
+        @apply text-sm text-gray-500 dark:text-gray-400 not-italic;
+    }
+
+    :global(.editor-content .editor-code) {
+        @apply p-4 bg-gray-900 text-gray-100 rounded-lg overflow-x-auto my-4 font-mono text-sm;
+    }
+
+    :global(.editor-content .editor-delimiter) {
+        @apply border-gray-200 dark:border-gray-700 my-6;
+    }
+
+    :global(.editor-content .editor-image) {
+        @apply my-4;
+    }
+
+    :global(.editor-content .editor-image img) {
+        @apply max-w-full h-auto rounded-lg;
+    }
+
+    :global(.editor-content .editor-image figcaption) {
+        @apply text-center text-sm text-gray-500 dark:text-gray-400 mt-2;
+    }
+</style>
