@@ -71,6 +71,9 @@
             registrant: '김철수',
             registrantEmail: 'cs.kim@clew.tech',
             registeredDate: '2024-01-15',
+            price: 150000,
+            salesCount: 23,
+            status: 'published' // pending, rejected, published, unpublished
         },
         {
             id: 2,
@@ -80,18 +83,23 @@
             registrant: '이민수',
             registrantEmail: 'ms.lee@clew.tech',
             registeredDate: '2024-01-14',
+            price: 0,
+            salesCount: 45,
+            status: 'published'
         },
         {
-            id: 4,
-            title: 'BLDC-2024-0567 BLDC 모터 제어 알고리즘 문서',
-            assetType: '기술문서',
-            motorType: 'BLDC',
-            registrant: '최지훈',
-            registrantEmail: 'jh.choi@geneers.com',
-            registeredDate: '2024-01-12',
-        },
+            id: 3,
+            title: 'IM-2024-0234 유도전동기 효율 시험성적서',
+            assetType: '시험성적서',
+            motorType: 'IM',
+            registrant: '박영희',
+            registrantEmail: 'yh.park@clew.tech',
+            registeredDate: '2024-01-13',
+            price: 80000,
+            salesCount: 0,
+            status: 'pending'
+        }
     ]);
-
     // 요청 승인/반려 핸들러
     function handleApprove(request, description) {
         console.log('Approve:', request.requestId, description);
