@@ -8,6 +8,16 @@
     const assetTypeOptions = ['설계도면', '사양서', '시험성적서', '기술문서', '해석보고서'];
     const motorTypeOptions = ['IPMSM', 'SPMSM', 'IM', 'BLDC', 'SRM'];
 
+    // ========== 정렬 옵션 ==========
+    const sortOptions = [
+        { value: 'salesDesc', label: '판매 많은 순', icon: 'TrendingUp' },
+        { value: 'salesAsc', label: '판매 적은 순', icon: 'TrendingDown' },
+        { value: 'priceDesc', label: '가격 높은 순', icon: 'ArrowUp' },
+        { value: 'priceAsc', label: '가격 낮은 순', icon: 'ArrowDown' },
+        { value: 'dateDesc', label: '최신 등록순', icon: 'Calendar' },
+        { value: 'dateAsc', label: '오래된 순', icon: 'CalendarDays' },
+    ];
+
     // ========== 기술자료 목록 ==========
     let digitalAssets = $state([
         {
@@ -20,7 +30,7 @@
             registeredDate: '2024-01-15',
             price: 150000,
             salesCount: 23,
-            status: 'published' // draft, pending, rejected, published, unpublished
+            status: 'published'
         },
         {
             id: 2,
@@ -122,12 +132,40 @@
 
     // ========== 필터 상태 ==========
     let statusFilter = $state('all');
-    let assetTypeFilter = $state('all');
-    let motorTypeFilter = $state('all');
+    let selectedAssetTypes = $state([]);  // 복수 선택
+    let selectedMotorTypes = $state([]);  // 복수 선택
     let searchQuery = $state('');
     let priceMin = $state('');
     let priceMax = $state('');
     let showFilters = $state(false);
+    let sortBy = $state('');  // 정렬 옵션
+
+    // ========== 자료타입 토글 ==========
+    function toggleAssetType(type) {
+        if (selectedAssetTypes.includes(type)) {
+            selectedAssetTypes = selectedAssetTypes.filter(t => t !== type);
+        } else {
+            selectedAssetTypes = [...selectedAssetTypes, type];
+        }
+    }
+
+    // ========== 전동기타입 토글 ==========
+    function toggleMotorType(type) {
+        if (selectedMotorTypes.includes(type)) {
+            selectedMotorTypes = selectedMotorTypes.filter(t => t !== type);
+        } else {
+            selectedMotorTypes = [...selectedMotorTypes, type];
+        }
+    }
+
+    // ========== 정렬 토글 ==========
+    function toggleSort(value) {
+        if (sortBy === value) {
+            sortBy = '';
+        } else {
+            sortBy = value;
+        }
+    }
 
     // ========== 필터링된 데이터 ==========
     let filteredAssets = $derived(() => {
@@ -138,14 +176,14 @@
             result = result.filter(a => a.status === statusFilter);
         }
 
-        // 자료 타입 필터
-        if (assetTypeFilter !== 'all') {
-            result = result.filter(a => a.assetType === assetTypeFilter);
+        // 자료 타입 필터 (복수 선택)
+        if (selectedAssetTypes.length > 0) {
+            result = result.filter(a => selectedAssetTypes.includes(a.assetType));
         }
 
-        // 전동기 타입 필터
-        if (motorTypeFilter !== 'all') {
-            result = result.filter(a => a.motorType === motorTypeFilter);
+        // 전동기 타입 필터 (복수 선택)
+        if (selectedMotorTypes.length > 0) {
+            result = result.filter(a => selectedMotorTypes.includes(a.motorType));
         }
 
         // 검색어 필터 (제목, 등록인, 등록인 이메일)
@@ -166,6 +204,28 @@
             result = result.filter(a => a.price <= Number(priceMax));
         }
 
+        // 정렬
+        if (sortBy) {
+            result = [...result].sort((a, b) => {
+                switch (sortBy) {
+                    case 'salesDesc':
+                        return b.salesCount - a.salesCount;
+                    case 'salesAsc':
+                        return a.salesCount - b.salesCount;
+                    case 'priceDesc':
+                        return b.price - a.price;
+                    case 'priceAsc':
+                        return a.price - b.price;
+                    case 'dateDesc':
+                        return new Date(b.registeredDate) - new Date(a.registeredDate);
+                    case 'dateAsc':
+                        return new Date(a.registeredDate) - new Date(b.registeredDate);
+                    default:
+                        return 0;
+                }
+            });
+        }
+
         return result;
     });
 
@@ -182,8 +242,8 @@
     // ========== 활성 필터 개수 ==========
     let activeFilterCount = $derived(() => {
         let count = 0;
-        if (assetTypeFilter !== 'all') count++;
-        if (motorTypeFilter !== 'all') count++;
+        if (selectedAssetTypes.length > 0) count++;
+        if (selectedMotorTypes.length > 0) count++;
         if (priceMin !== '' || priceMax !== '') count++;
         return count;
     });
@@ -197,7 +257,6 @@
     function handleToggleStatus(asset) {
         const index = digitalAssets.findIndex(a => a.id === asset.id);
         if (index !== -1) {
-            // published <-> unpublished 토글
             if (digitalAssets[index].status === 'published') {
                 digitalAssets[index].status = 'unpublished';
             } else if (digitalAssets[index].status === 'unpublished') {
@@ -213,11 +272,12 @@
     }
 
     function clearFilters() {
-        assetTypeFilter = 'all';
-        motorTypeFilter = 'all';
+        selectedAssetTypes = [];
+        selectedMotorTypes = [];
         priceMin = '';
         priceMax = '';
         searchQuery = '';
+        sortBy = '';
     }
 
     function handlePageChange(page) {
@@ -412,39 +472,47 @@
 
             <!-- 확장 필터 영역 -->
             {#if showFilters}
-                <div class="pt-4 border-t border-gray-100 dark:border-gray-800">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <!-- 자료 타입 -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">자료 타입</label>
-                            <select
-                                bind:value={assetTypeFilter}
-                                class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                            >
-                                <option value="all">전체</option>
-                                {#each assetTypeOptions as type}
-                                    <option value={type}>{type}</option>
-                                {/each}
-                            </select>
+                <div class="pt-4 border-t border-gray-100 dark:border-gray-800 space-y-4">
+                    <!-- 자료 타입 (복수 선택) -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">자료 타입</label>
+                        <div class="flex flex-wrap gap-2">
+                            {#each assetTypeOptions as type}
+                                <button
+                                    onclick={() => toggleAssetType(type)}
+                                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors {selectedAssetTypes.includes(type) ? 'bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'}"
+                                >
+                                    {#if selectedAssetTypes.includes(type)}
+                                        <Icon name="Check" size="xs" class="inline mr-1" />
+                                    {/if}
+                                    {type}
+                                </button>
+                            {/each}
                         </div>
+                    </div>
 
-                        <!-- 전동기 타입 -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">전동기 타입</label>
-                            <select
-                                bind:value={motorTypeFilter}
-                                class="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                            >
-                                <option value="all">전체</option>
-                                {#each motorTypeOptions as type}
-                                    <option value={type}>{type}</option>
-                                {/each}
-                            </select>
+                    <!-- 전동기 타입 (복수 선택) -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">전동기 타입</label>
+                        <div class="flex flex-wrap gap-2">
+                            {#each motorTypeOptions as type}
+                                <button
+                                    onclick={() => toggleMotorType(type)}
+                                    class="px-3 py-1.5 text-sm rounded-lg border transition-colors {selectedMotorTypes.includes(type) ? 'bg-purple-100 dark:bg-purple-900 border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300' : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'}"
+                                >
+                                    {#if selectedMotorTypes.includes(type)}
+                                        <Icon name="Check" size="xs" class="inline mr-1" />
+                                    {/if}
+                                    {type}
+                                </button>
+                            {/each}
                         </div>
+                    </div>
 
-                        <!-- 가격 범위 -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">가격 범위</label>
+                    <!-- 가격 범위 + 필터 초기화 -->
+                    <div class="flex flex-wrap items-end gap-4">
+                        <div class="flex-1 min-w-[200px] max-w-[300px]">
+                            <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">가격 범위</label>
                             <div class="flex items-center gap-2">
                                 <input
                                     type="number"
@@ -461,22 +529,18 @@
                                 />
                             </div>
                         </div>
-
-                        <!-- 필터 초기화 -->
-                        <div class="flex items-end">
-                            <button
-                                onclick={clearFilters}
-                                class="w-full px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
-                            >
-                                <Icon name="RotateCcw" size="sm" />
-                                필터 초기화
-                            </button>
-                        </div>
+                        <button
+                            onclick={clearFilters}
+                            class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
+                        >
+                            <Icon name="RotateCcw" size="sm" />
+                            필터 초기화
+                        </button>
                     </div>
 
                     <!-- 적용된 필터 태그 -->
                     {#if activeFilterCount() > 0 || searchQuery}
-                        <div class="flex flex-wrap items-center gap-2 mt-4">
+                        <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100 dark:border-gray-800">
                             <span class="text-xs text-gray-500 dark:text-gray-400">적용된 필터:</span>
                             {#if searchQuery}
                                 <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full">
@@ -486,21 +550,25 @@
                                     </button>
                                 </span>
                             {/if}
-                            {#if assetTypeFilter !== 'all'}
-                                <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full">
-                                    자료: {assetTypeFilter}
-                                    <button onclick={() => assetTypeFilter = 'all'} class="hover:text-blue-900 dark:hover:text-blue-100">
-                                        <Icon name="X" size="xs" />
-                                    </button>
-                                </span>
+                            {#if selectedAssetTypes.length > 0}
+                                {#each selectedAssetTypes as type}
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-full">
+                                        {type}
+                                        <button onclick={() => toggleAssetType(type)} class="hover:text-blue-900 dark:hover:text-blue-100">
+                                            <Icon name="X" size="xs" />
+                                        </button>
+                                    </span>
+                                {/each}
                             {/if}
-                            {#if motorTypeFilter !== 'all'}
-                                <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full">
-                                    전동기: {motorTypeFilter}
-                                    <button onclick={() => motorTypeFilter = 'all'} class="hover:text-purple-900 dark:hover:text-purple-100">
-                                        <Icon name="X" size="xs" />
-                                    </button>
-                                </span>
+                            {#if selectedMotorTypes.length > 0}
+                                {#each selectedMotorTypes as type}
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full">
+                                        {type}
+                                        <button onclick={() => toggleMotorType(type)} class="hover:text-purple-900 dark:hover:text-purple-100">
+                                            <Icon name="X" size="xs" />
+                                        </button>
+                                    </span>
+                                {/each}
                             {/if}
                             {#if priceMin !== '' || priceMax !== ''}
                                 <span class="inline-flex items-center gap-1 px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-full">
@@ -515,6 +583,30 @@
                 </div>
             {/if}
         </header>
+
+        <!-- 정렬 옵션 -->
+        <div class="px-6 py-3 border-b border-gray-100 dark:border-gray-800 flex items-center gap-4 overflow-x-auto">
+            <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">정렬:</span>
+            <div class="flex items-center gap-1">
+                {#each sortOptions as option}
+                    <button
+                        onclick={() => toggleSort(option.value)}
+                        class="px-3 py-1.5 text-xs font-medium rounded-md transition-colors whitespace-nowrap {sortBy === option.value ? 'bg-primary text-white' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300'}"
+                    >
+                        {option.label}
+                    </button>
+                {/each}
+            </div>
+            {#if sortBy}
+                <button
+                    onclick={() => sortBy = ''}
+                    class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center gap-1"
+                >
+                    <Icon name="X" size="xs" />
+                    정렬 해제
+                </button>
+            {/if}
+        </div>
 
         <!-- 테이블 -->
         <section class="p-6">
@@ -531,6 +623,11 @@
             <div class="flex items-center justify-between">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                     총 {filteredAssets().length}건
+                    {#if sortBy}
+                        <span class="text-primary ml-2">
+                            ({sortOptions.find(o => o.value === sortBy)?.label})
+                        </span>
+                    {/if}
                 </p>
                 <Pagination
                     bind:currentPage={currentPage}
