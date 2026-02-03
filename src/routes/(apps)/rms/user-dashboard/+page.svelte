@@ -73,7 +73,7 @@
             registeredDate: '2024-01-15',
             price: 150000,
             salesCount: 23,
-            status: 'published' // pending, rejected, published, unpublished
+            status: 'published' // draft, pending, rejected, published, unpublished
         },
         {
             id: 2,

@@ -20,7 +20,7 @@
             registeredDate: '2024-01-15',
             price: 150000,
             salesCount: 23,
-            status: 'published' // pending, rejected, published, unpublished
+            status: 'published' // draft, pending, rejected, published, unpublished
         },
         {
             id: 2,
@@ -94,6 +94,30 @@
             salesCount: 0,
             status: 'pending'
         },
+        {
+            id: 8,
+            title: 'IM-2024-0456 유도전동기 설계 초안',
+            assetType: '설계도면',
+            motorType: 'IM',
+            registrant: '박영희',
+            registrantEmail: 'yh.park@clew.tech',
+            registeredDate: '2024-01-08',
+            price: 0,
+            salesCount: 0,
+            status: 'draft'
+        },
+        {
+            id: 9,
+            title: 'SRM-2024-0999 SRM 해석 보고서 (작성중)',
+            assetType: '해석보고서',
+            motorType: 'SRM',
+            registrant: '한소영',
+            registrantEmail: 'sy.han@clew.tech',
+            registeredDate: '2024-01-07',
+            price: 0,
+            salesCount: 0,
+            status: 'draft'
+        },
     ]);
 
     // ========== 필터 상태 ==========
@@ -124,13 +148,13 @@
             result = result.filter(a => a.motorType === motorTypeFilter);
         }
 
-        // 검색어 필터
+        // 검색어 필터 (제목, 등록인, 등록인 이메일)
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase();
             result = result.filter(a => 
                 a.title.toLowerCase().includes(query) ||
-                a.assetType.toLowerCase().includes(query) ||
-                a.motorType.toLowerCase().includes(query)
+                a.registrant.toLowerCase().includes(query) ||
+                a.registrantEmail.toLowerCase().includes(query)
             );
         }
 
@@ -148,6 +172,7 @@
     // ========== 상태별 건수 ==========
     let statusCounts = $derived({
         all: digitalAssets.length,
+        draft: digitalAssets.filter(a => a.status === 'draft').length,
         pending: digitalAssets.filter(a => a.status === 'pending').length,
         rejected: digitalAssets.filter(a => a.status === 'rejected').length,
         published: digitalAssets.filter(a => a.status === 'published').length,
@@ -180,6 +205,11 @@
             }
         }
         console.log('Toggled status:', asset.id, digitalAssets[index].status);
+    }
+
+    function handleDelete(asset) {
+        digitalAssets = digitalAssets.filter(a => a.id !== asset.id);
+        console.log('Deleted:', asset.id);
     }
 
     function clearFilters() {
@@ -218,7 +248,7 @@
     </PageHeader>
 
     <!-- 통계 카드 -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
@@ -227,6 +257,17 @@
                 <div>
                     <p class="text-xl font-bold text-gray-900 dark:text-white">{statusCounts.all}</p>
                     <p class="text-xs text-gray-500 dark:text-gray-400">전체</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl p-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <Icon name="FileEdit" size="sm" class="text-slate-600 dark:text-slate-400" />
+                </div>
+                <div>
+                    <p class="text-xl font-bold text-gray-900 dark:text-white">{statusCounts.draft}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">임시저장</p>
                 </div>
             </div>
         </div>
@@ -292,6 +333,13 @@
                         <span class="ml-1 text-xs text-gray-400">({statusCounts.all})</span>
                     </button>
                     <button
+                        onclick={() => statusFilter = 'draft'}
+                        class="px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap {statusFilter === 'draft' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
+                    >
+                        임시저장
+                        <span class="ml-1 text-xs text-gray-400">({statusCounts.draft})</span>
+                    </button>
+                    <button
                         onclick={() => statusFilter = 'pending'}
                         class="px-3 py-2 text-sm font-medium rounded-md transition-colors whitespace-nowrap flex items-center gap-1 {statusFilter === 'pending' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}"
                     >
@@ -333,7 +381,7 @@
                         <input
                             type="text"
                             bind:value={searchQuery}
-                            placeholder="기술자료 검색..."
+                            placeholder="제목, 등록인 검색..."
                             class="pl-10 pr-4 py-2 w-64 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                         />
                         {#if searchQuery}
@@ -473,6 +521,7 @@
             <DigitalAssetTable
                 data={filteredAssets()}
                 onToggleStatus={handleToggleStatus}
+                onDelete={handleDelete}
                 emptyMessage="조건에 맞는 기술자료가 없습니다."
             />
         </section>

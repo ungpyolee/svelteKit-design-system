@@ -6,6 +6,7 @@
     let {
         data = [],
         onToggleStatus = () => {},
+        onDelete = () => {},  // 삭제 핸들러 추가
         onRowClick = () => {},
         emptyMessage = '등록된 기술자료가 없습니다.',
         titleMaxWidth = '250px',
@@ -13,6 +14,11 @@
 
     // 상태별 설정
     const statusConfig = {
+        draft: {
+            label: '임시저장',
+            class: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
+            icon: 'FileEdit'
+        },
         pending: {
             label: '승인대기',
             class: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-400',
@@ -34,6 +40,9 @@
             icon: 'EyeOff'
         }
     };
+
+    
+
 
     // 자료 타입별 스타일
     const assetTypeConfig = {
@@ -182,6 +191,7 @@
                     <!-- 액션 -->
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-1 justify-end">
+                            <!-- 수정 버튼 -->
                             <a
                                 href="/rms/digital-assets/{asset.id}/edit"
                                 class="p-1.5 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 rounded-lg transition-colors"
@@ -190,6 +200,17 @@
                             >
                                 <Icon name="Pencil" size="sm"/>
                             </a>
+        
+                            <!-- 삭제 버튼 -->
+                            <button
+                                onclick={(e) => { e.stopPropagation(); onDelete(asset); }}
+                                class="p-1.5 text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded-lg transition-colors"
+                                title="삭제"
+                            >
+                                <Icon name="Trash2" size="sm"/>
+                            </button>
+                            
+                            <!-- 상세보기 버튼 -->
                             <button
                                 class="p-1.5 text-gray-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
                                 onclick={(e) => { e.stopPropagation(); handleRowClick(asset); }}
